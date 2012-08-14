@@ -50,10 +50,28 @@
 		{
 			USB_Descriptor_Configuration_Header_t Config;
 
+			USB_Descriptor_Interface_Association_t   Audio_ControlInterface_IAD;
+
+			// MIDI Audio Control Interface
+			USB_Descriptor_Interface_t                Audio_ControlInterface;
+			USB_Audio_Descriptor_Interface_AC_t       Audio_ControlInterface_SPC;
+
+			// MIDI Audio Streaming Interface
+			USB_Descriptor_Interface_t                Audio_StreamInterface;
+			USB_MIDI_Descriptor_AudioInterface_AS_t   Audio_StreamInterface_SPC;
+			USB_MIDI_Descriptor_InputJack_t           MIDI_In_Jack_Emb;
+			USB_MIDI_Descriptor_InputJack_t           MIDI_In_Jack_Ext;
+			USB_MIDI_Descriptor_OutputJack_t          MIDI_Out_Jack_Emb;
+			USB_MIDI_Descriptor_OutputJack_t          MIDI_Out_Jack_Ext;
+			USB_Audio_Descriptor_StreamEndpoint_Std_t MIDI_In_Jack_Endpoint;
+			USB_MIDI_Descriptor_Jack_Endpoint_t       MIDI_In_Jack_Endpoint_SPC;
+			USB_Audio_Descriptor_StreamEndpoint_Std_t MIDI_Out_Jack_Endpoint;
+			USB_MIDI_Descriptor_Jack_Endpoint_t       MIDI_Out_Jack_Endpoint_SPC;
+
 			// Generic HID Interface
 			USB_Descriptor_Interface_t            HID_Interface;
 			USB_HID_Descriptor_HID_t              HID_GenericHID;
-	        USB_Descriptor_Endpoint_t             HID_ReportINEndpoint;
+			USB_Descriptor_Endpoint_t             HID_ReportINEndpoint;
 		} USB_Descriptor_Configuration_t;
 
 	/* Macros: */
@@ -65,6 +83,16 @@
 
 		/** Size in bytes of the Generic HID reports (including report ID byte). */
 		#define GENERIC_REPORT_SIZE       8
+
+	/* Macros: */
+		/** Endpoint number of the MIDI streaming data IN endpoint, for device-to-host data transfers. */
+		#define MIDI_STREAM_IN_EPNUM        2
+
+		/** Endpoint number of the MIDI streaming data OUT endpoint, for host-to-device data transfers. */
+		#define MIDI_STREAM_OUT_EPNUM       1
+
+		/** Endpoint size in bytes of the Audio isochronous streaming data IN and OUT endpoints. */
+		#define MIDI_STREAM_EPSIZE          64
 
 	/* Function Prototypes: */
 		uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,

@@ -47,7 +47,7 @@ USB_ClassInfo_HID_Device_t Generic_HID_Interface =
 	{
 		.Config =
 			{
-				.InterfaceNumber              = 0,
+				.InterfaceNumber              = 3,
 
 				.ReportINEndpointNumber       = GENERIC_IN_EPNUM,
 				.ReportINEndpointSize         = GENERIC_EPSIZE,
@@ -55,6 +55,27 @@ USB_ClassInfo_HID_Device_t Generic_HID_Interface =
 
 				.PrevReportINBuffer           = PrevHIDReportBuffer,
 				.PrevReportINBufferSize       = sizeof(PrevHIDReportBuffer),
+			},
+	};
+
+
+/** LUFA MIDI Class driver interface configuration and state information. This structure is
+ *  passed to all MIDI Class driver functions, so that multiple instances of the same class
+ *  within a device can be differentiated from one another.
+ */
+USB_ClassInfo_MIDI_Device_t Keyboard_MIDI_Interface =
+	{
+		.Config =
+			{
+				.StreamingInterfaceNumber = 1,
+
+				.DataINEndpointNumber      = MIDI_STREAM_IN_EPNUM,
+				.DataINEndpointSize        = MIDI_STREAM_EPSIZE,
+				.DataINEndpointDoubleBank  = false,
+
+				.DataOUTEndpointNumber     = MIDI_STREAM_OUT_EPNUM,
+				.DataOUTEndpointSize       = MIDI_STREAM_EPSIZE,
+				.DataOUTEndpointDoubleBank = false,
 			},
 	};
 
@@ -71,7 +92,14 @@ int main(void)
 
 	for (;;)
 	{
+
+		MIDI_EventPacket_t ReceivedMIDIEvent;
+		while (MIDI_Device_ReceiveEventPacket(&Keyboard_MIDI_Interface, &ReceivedMIDIEvent))
+		{
+			MIDI_Device_SendEventPacket(&Keyboard_MIDI_Interface, &ReceivedMIDIEvent);
+		}
 		HID_Device_USBTask(&Generic_HID_Interface);
+		MIDI_Device_USBTask(&Keyboard_MIDI_Interface);
 		USB_USBTask();
 	}
 }
@@ -109,6 +137,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 	bool ConfigSuccess = true;
 
 	ConfigSuccess &= HID_Device_ConfigureEndpoints(&Generic_HID_Interface);
+	ConfigSuccess &= MIDI_Device_ConfigureEndpoints(&Keyboard_MIDI_Interface);
 
 	USB_Device_EnableSOFEvents();
 
@@ -119,6 +148,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 void EVENT_USB_Device_ControlRequest(void)
 {
 	HID_Device_ProcessControlRequest(&Generic_HID_Interface);
+	MIDI_Device_ProcessControlRequest(&Keyboard_MIDI_Interface);
 }
 
 /** Event handler for the USB device Start Of Frame event. */
