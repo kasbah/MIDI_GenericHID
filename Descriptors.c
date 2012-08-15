@@ -108,19 +108,19 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 			.MaxPowerConsumption    = USB_CONFIG_POWER_MA(100)
 		},
 
-	.Audio_ControlInterface_IAD =
-	 {
-	   .Header                 = {.Size = sizeof(USB_Descriptor_Interface_Association_t), .Type = DTYPE_InterfaceAssociation},
-	
-	   .FirstInterfaceIndex    = 0,
-	   .TotalInterfaces        = 2,
-	
-	   .Class                  = 0x01,
-	   .SubClass               = 0x03,
-	   .Protocol               = 0x00,
-	
-	   .IADStrIndex            = NO_DESCRIPTOR
-	 },
+	.Audio_IAD =
+	{
+		.Header = {.Size = sizeof(USB_Descriptor_Interface_Association_t), .Type = DTYPE_InterfaceAssociation},
+		
+		.FirstInterfaceIndex = 0,
+		.TotalInterfaces = 2,
+		
+		.Class = AUDIO_CSCP_AudioClass,
+		.SubClass = AUDIO_CSCP_ControlSubclass,
+		.Protocol = AUDIO_CSCP_ControlProtocol,
+		
+		.IADStrIndex = 0x04
+	},
 	.Audio_ControlInterface =
 		{
 			.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
@@ -172,8 +172,9 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 
 			.AudioSpecification       = VERSION_BCD(01.00),
 
-			.TotalLength              = (sizeof(USB_Descriptor_Configuration_t) -
-			                             offsetof(USB_Descriptor_Configuration_t, Audio_StreamInterface_SPC))
+			.TotalLength              =  offsetof(USB_Descriptor_Configuration_t, HID_Interface)
+				                         - offsetof(USB_Descriptor_Configuration_t, Audio_StreamInterface_SPC)  
+
 		},
 
 	.MIDI_In_Jack_Emb =
@@ -313,7 +314,7 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 			.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 			.EndpointSize           = GENERIC_EPSIZE,
 			.PollingIntervalMS      = 0x01
-		},
+		}
 };
 
 /** Language descriptor structure. This descriptor, located in FLASH memory, is returned when the host requests

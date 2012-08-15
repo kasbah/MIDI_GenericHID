@@ -50,7 +50,7 @@
 		{
 			USB_Descriptor_Configuration_Header_t Config;
 
-			USB_Descriptor_Interface_Association_t   Audio_ControlInterface_IAD;
+			USB_Descriptor_Interface_Association_t   Audio_IAD;
 
 			// MIDI Audio Control Interface
 			USB_Descriptor_Interface_t                Audio_ControlInterface;
@@ -76,7 +76,7 @@
 
 	/* Macros: */
 		/** Endpoint number of the Generic HID reporting IN endpoint. */
-		#define GENERIC_IN_EPNUM          1
+		#define GENERIC_IN_EPNUM          3
 
 		/** Size in bytes of the Generic HID reporting endpoint. */
 		#define GENERIC_EPSIZE            8
