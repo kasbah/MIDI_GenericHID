@@ -121,6 +121,21 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 	
 	   .IADStrIndex            = NO_DESCRIPTOR
 	 },
+	.Audio_ControlInterface =
+		{
+			.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
+
+			.InterfaceNumber          = 0,
+			.AlternateSetting         = 0,
+
+			.TotalEndpoints           = 0,
+
+			.Class                    = AUDIO_CSCP_AudioClass,
+			.SubClass                 = AUDIO_CSCP_ControlSubclass,
+			.Protocol                 = AUDIO_CSCP_ControlProtocol,
+
+			.InterfaceStrIndex        = NO_DESCRIPTOR
+		},
 
 	.Audio_ControlInterface_SPC =
 		{

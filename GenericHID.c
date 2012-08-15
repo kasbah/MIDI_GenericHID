@@ -47,7 +47,7 @@ USB_ClassInfo_HID_Device_t Generic_HID_Interface =
 	{
 		.Config =
 			{
-				.InterfaceNumber              = 3,
+				.InterfaceNumber              = 2,
 
 				.ReportINEndpointNumber       = GENERIC_IN_EPNUM,
 				.ReportINEndpointSize         = GENERIC_EPSIZE,
@@ -176,10 +176,10 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 	uint8_t* Data = (uint8_t*)ReportData;
 	uint8_t  CurrLEDMask = LEDs_GetLEDs();
 
-	Data[0] = ((CurrLEDMask & LEDS_LED1) ? 1 : 0);
-	Data[1] = ((CurrLEDMask & LEDS_LED2) ? 1 : 0);
-	Data[2] = ((CurrLEDMask & LEDS_LED3) ? 1 : 0);
-	Data[3] = ((CurrLEDMask & LEDS_LED4) ? 1 : 0);
+	Data[0] = 0x7F;//((CurrLEDMask & LEDS_LED1) ? 1 : 0);
+	Data[1] = 0x7F;//((CurrLEDMask & LEDS_LED2) ? 1 : 0);
+	Data[2] = 0x7F;//((CurrLEDMask & LEDS_LED3) ? 1 : 0);
+	Data[3] = 0x7F;//((CurrLEDMask & LEDS_LED4) ? 1 : 0);
 
 	*ReportSize = GENERIC_REPORT_SIZE;
 	return false;
