@@ -119,7 +119,7 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 		.SubClass = AUDIO_CSCP_ControlSubclass,
 		.Protocol = AUDIO_CSCP_ControlProtocol,
 		
-		.IADStrIndex = 0x04
+		.IADStrIndex = NO_DESCRIPTOR
 	},
 	.Audio_ControlInterface =
 		{
